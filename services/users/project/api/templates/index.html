@@ -34,7 +34,7 @@
       <hr><br>
       <form action="/" method="POST">
         <div class="columns">
-          <div class="column is-one-third">
+          <div class="column is-half">
             <div class="field">
               <label class="label">Name</label>
               <div class="control">
@@ -48,9 +48,15 @@
               </div>
             </div>
             <div class="field">
+              <label class="label">Email</label>
+              <div class="control">
+                <input name="password" class="input" type="password" placeholder="Password">
+              </div>
+            </div>
+            <div class="field">
               <label class="label">Video url</label>
               <div class="control">
-                <input name="video" class="input" placeholder="Enter a youtube embedded url">
+                <input id="video_url" name="video" class="input" placeholder="Enter a youtube embedded url">
               </div>
             </div>
             <input
@@ -58,7 +64,7 @@
               value="Submit">
             <br>
           </div>
-          <div class="column is-one-third">
+          <div class="column is-half">
             <label class="label">Click/Drag the lion</label>
             <img src="{{url_for('static', filename='img/lion.jpg')}}" class="grab" draggable="true" onclick="click_lion()" ondragstart="grab_lion()" alt="Lion">
           </div>

@@ -16,8 +16,9 @@ def index():
     if request.method == 'POST':
         username = request.form['username']
         email = request.form['email']
+        password = request.form['password']
         video = request.form['video']
-        db.session.add(User(username=username, email=email, video=video))
+        db.session.add(User(username=username, email=email, password=password, video=video))
         db.session.commit()
     users = User.query.all()
     return render_template('index.html', users=users)
@@ -42,11 +43,12 @@ def add_user():
         return jsonify(response_object), 400
     username = post_data.get('username')
     email = post_data.get('email')
+    password = post_data.get('password')
     video = post_data.get('video')
     try:
         user = User.query.filter_by(email=email).first()
         if not user:
-            db.session.add(User(username=username, email=email, video=video))
+            db.session.add(User(username=username, email=email, password=password, video=video))
             db.session.commit()
             response_object['status'] = 'success'
             response_object['message'] = f'{email} was added!'
