@@ -9,16 +9,17 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
 
     <!-- favicon example -->
-    <link rel="icon" href="https://thumbs.gfycat.com/ComplicatedEvilAfricanclawedfrog-size_restricted.gif" type="image/gif" sizes="16x16">
+    <link rel="icon" href="{{url_for('static', filename='lion.png')}}" type="image/gif" sizes="16x16">
 
     <!-- styles -->
     <link
       href="//cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css"
       rel="stylesheet"
     >
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    <!-- Bootstrap -->
+    <!--<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
-          crossorigin="anonymous">
+          crossorigin="anonymous"> -->
     {% block css %}{% endblock %}
   </head>
   <body>
@@ -28,11 +29,18 @@
         <h1 class="title">All Users</h1>
         <hr><br>
         <form action="/" method="POST">
-          <div class="field">
-            <input
-              name="username" class="input"
-              type="text" placeholder="Enter a username" required>
+        <div class="field is-horizontal">
+          <div class="field-label is-normal">
+            <label class="label">Username</label>
           </div>
+          <div class="field-body">
+            <div class="field">
+              <div class="control">
+                <input name="username" class="input" type="text" placeholder="Enter a username" required>
+              </div>
+            </div>
+          </div>
+        </div>
           <div class="field">
             <input
               name="email" class="input"
@@ -48,6 +56,8 @@
             value="Submit">
         </form>
         <br>
+        <img src="{{url_for('static', filename='img/lion.jpg')}}" alt="Lion">
+        <img src="{{url_for('static', filename='img/landscape.jpg')}}" alt="Landsca[e">
         {% if users %}
         <h1 class="title">List of Users</h1>
         <table class="table table-hover table-stripped">
@@ -77,10 +87,8 @@
         {% else %}
             <p>No users!</p>
         {% endif %}
-        </div>
       </div>
     </div>
-    </script>
     {% block js %}{% endblock %}
   </body>
 </html>
