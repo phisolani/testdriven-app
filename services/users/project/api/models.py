@@ -13,17 +13,20 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     username = db.Column(db.String(128), nullable=False)
     email = db.Column(db.String(128), nullable=False)
+    video = db.Column(db.String(128))
     active = db.Column(db.Boolean(), default=True, nullable=False)
     created_date = db.Column(db.DateTime, default=func.now(), nullable=False)
 
-    def __init__(self, username, email):
+    def __init__(self, username, email, video):
         self.username = username
         self.email = email
+        self.video = video
 
     def to_json(self):
         return {
             'id': self.id,
             'username': self.username,
             'email': self.email,
+            'video': self.video,
             'active': self.active
         }
