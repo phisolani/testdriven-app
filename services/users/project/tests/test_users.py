@@ -1,4 +1,4 @@
-# services/users/project/tests/test_users.py
+#  services/users/project/tests/test_users.py
 
 
 import json
@@ -26,30 +26,6 @@ class TestUserService(BaseTestCase):
         self.assertEqual(response.status_code, 200)
         self.assertIn('pong!', data['message'])
         self.assertIn('success', data['status'])
-
-    def test_data_types(self):
-        """Ensure the /time is during the morning."""
-        response = self.client.get('/users/time')
-        data = json.loads(response.data.decode())
-        self.assertEqual(response.status_code, 200)
-        self.assertIsInstance(data['Current Microsecond'], int, "The microseconds are not in integer format!")
-
-    def test_time_morning(self):
-        """Ensure the /time is during the morning."""
-        response = self.client.get('/users/time')
-        data = json.loads(response.data.decode())
-        self.assertEqual(response.status_code, 200)
-        self.assertLess(data['Current Hour'], 12, "The date says that it is not in the morning!")
-
-
-    def test_months(self):
-        """Ensure the /time is during the morning."""
-        response = self.client.get('/users/time')
-        data = json.loads(response.data.decode())
-        self.assertEqual(response.status_code, 200)
-        """Ensure the /time is during may, june, or december."""
-        self.assertIn(data['Current Month'], [5, 6, 12],
-                      "The date says that it is not May, June, or December!")
 
     def test_add_user(self):
         """Ensure a new user can be added to the database."""
@@ -165,6 +141,44 @@ class TestUserService(BaseTestCase):
             self.assertIn(
                 'fletcher@notreal.com', data['data']['users'][1]['email'])
             self.assertIn('success', data['status'])
+
+    def test_main_no_users(self):
+        """Ensure the main route behaves correctly when no users have been
+        added to the database."""
+        response = self.client.get('/')
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(b'All Users', response.data)
+        self.assertIn(b'<p>No users!</p>', response.data)
+
+
+    def test_main_with_users(self):
+        """Ensure the main route behaves correctly when users have been
+        added to the database."""
+        add_user('michael', 'michael@mherman.org')
+        add_user('fletcher', 'fletcher@notreal.com')
+        with self.client:
+            response = self.client.get('/')
+            self.assertEqual(response.status_code, 200)
+            self.assertIn(b'All Users', response.data)
+            self.assertNotIn(b'<p>No users!</p>', response.data)
+            self.assertIn(b'michael', response.data)
+            self.assertIn(b'fletcher', response.data)
+
+    def test_main_add_user(self):
+        """
+        Ensure a new user can be added to the database via a POST request.
+        """
+        with self.client:
+            response = self.client.post(
+                '/',
+                data=dict(username='michael', email='michael@sonotreal.com'),
+                follow_redirects=True
+            )
+            self.assertEqual(response.status_code, 200)
+            self.assertIn(b'All Users', response.data)
+            self.assertNotIn(b'<p>No users!</p>', response.data)
+            self.assertIn(b'michael', response.data)
+
 
 if __name__ == '__main__':
     unittest.main()

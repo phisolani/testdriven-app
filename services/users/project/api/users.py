@@ -1,14 +1,25 @@
 # services/users/project/api/users.py
 
-import datetime
-from flask import Blueprint, jsonify, request
+
+from flask import Blueprint, jsonify, request, render_template
+from sqlalchemy import exc
 
 from project.api.models import User
 from project import db
-from sqlalchemy import exc
 
 
-users_blueprint = Blueprint('users', __name__)
+users_blueprint = Blueprint('users', __name__, template_folder='./templates')
+
+
+@users_blueprint.route('/', methods=['GET', 'POST'])
+def index():
+    if request.method == 'POST':
+        username = request.form['username']
+        email = request.form['email']
+        db.session.add(User(username=username, email=email))
+        db.session.commit()
+    users = User.query.all()
+    return render_template('index.html', users=users)
 
 
 @users_blueprint.route('/users/ping', methods=['GET'])
@@ -16,20 +27,6 @@ def ping_pong():
     return jsonify({
         'status': 'success',
         'message': 'pong!'
-    })
-
-
-@users_blueprint.route('/users/time', methods=['GET'])
-def get_time():
-    currentDT = datetime.datetime.now()
-    return jsonify({
-        'Current Year': currentDT.year,
-        'Current Month': currentDT.month,
-        'Current Day': currentDT.day,
-        'Current Hour': currentDT.hour,
-        'Current Minute': currentDT.minute,
-        'Current Second': currentDT.second,
-        'Current Microsecond': currentDT.microsecond
     })
 
 
