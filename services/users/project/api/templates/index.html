@@ -9,13 +9,18 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
 
     <!-- favicon example -->
-    <link rel="icon" href="{{url_for('static', filename='lion.png')}}" type="image/gif" sizes="16x16">
+    <link rel="icon" href="{{url_for('static', filename='img/favicon.png')}}" type="image/gif" sizes="16x16">
+
+    <!-- js -->
+    <script src="{{url_for('static', filename='js/custom.js')}}"></script>
 
     <!-- styles -->
-    <link
-      href="//cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css"
-      rel="stylesheet"
-    >
+    <!-- Bluma -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css" rel="stylesheet">
+
+    <!-- Custom -->
+    <link href="{{url_for('static', filename='css/custom.css')}}" rel="stylesheet">
+
     <!-- Bootstrap -->
     <!--<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
@@ -24,70 +29,69 @@
   </head>
   <body>
     <div class="container">
-      <div class="column is-one-third">
-        <br>
-        <h1 class="title">All Users</h1>
-        <hr><br>
-        <form action="/" method="POST">
-        <div class="field is-horizontal">
-          <div class="field-label is-normal">
-            <label class="label">Username</label>
-          </div>
-          <div class="field-body">
+      <br>
+      <h1 id=title class="title">New User</h1>
+      <hr><br>
+      <form action="/" method="POST">
+        <div class="columns">
+          <div class="column is-one-third">
             <div class="field">
+              <label class="label">Name</label>
               <div class="control">
                 <input name="username" class="input" type="text" placeholder="Enter a username" required>
               </div>
             </div>
+            <div class="field">
+              <label class="label">Email</label>
+              <div class="control">
+                <input name="email" class="input" type="email" placeholder="Enter an email address" required>
+              </div>
+            </div>
+            <div class="field">
+              <label class="label">Video</label>
+              <div class="control">
+                <input name="video" class="input" placeholder="Enter a youtube embedded url">
+              </div>
+            </div>
+            <input
+              type="submit" class="button is-primary is-fullwidth"
+              value="Submit">
+            <br>
+          </div>
+          <div class="column is-one-third" id="mapholder">
+            <img src="{{url_for('static', filename='img/lion.jpg')}}" class="grab" draggable="true" ondragstart="grab_lion()" alt="Lion">
           </div>
         </div>
-          <div class="field">
-            <input
-              name="email" class="input"
-              type="email" placeholder="Enter an email address" required>
-          </div>
-          <div class="field">
-            <input
-              name="video" class="input"
-              placeholder="Enter a video url">
-          </div>
-          <input
-            type="submit" class="button is-primary is-fullwidth"
-            value="Submit">
-        </form>
-        <br>
-        <img src="{{url_for('static', filename='img/lion.jpg')}}" alt="Lion">
-        <img src="{{url_for('static', filename='img/landscape.jpg')}}" alt="Landsca[e">
         {% if users %}
-        <h1 class="title">List of Users</h1>
-        <table class="table table-hover table-stripped">
-          <thead>
-            <tr>
-              <th scope="col">#</th>
-              <th scope="col">Name</th>
-              <th scope="col">Email</th>
-              <th scope="col">Video</th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for user in users %}
-              </tr>
-                <td>{{user.id}}</td>
-                <td>{{user.username}}</td>
-                <td>{{user.email}}</td>
-                <td>
-                  <iframe width="420" height="315"
-                    src={{user.video}}>
-                  </iframe>
-                </td>
-              </tr>
-            {% endfor %}
-          </tbody>
-        </table>
-        {% else %}
-            <p>No users!</p>
-        {% endif %}
-      </div>
+            <h1 class="title">List of Users</h1>
+            <table class="table is-striped">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Name</th>
+                  <th scope="col">Email</th>
+                  <th scope="col">Video</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for user in users %}
+                  </tr>
+                    <td>{{user.id}}</td>
+                    <td>{{user.username}}</td>
+                    <td>{{user.email}}</td>
+                    <td>
+                      <iframe width="420" height="315"
+                        src={{user.video}}>
+                      </iframe>
+                    </td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+            {% else %}
+                <p>No users!</p>
+            {% endif %}
+      </form>
     </div>
     {% block js %}{% endblock %}
   </body>
