@@ -28,7 +28,7 @@
     {% block css %}{% endblock %}
   </head>
   <body>
-    <div class="container">
+    <div id="container" class="container">
       <br>
       <h1 id=title class="title">New User</h1>
       <hr><br>
@@ -65,8 +65,8 @@
             <br>
           </div>
           <div class="column is-half">
-            <label class="label">Click/Drag the lion</label>
-            <img src="{{url_for('static', filename='img/lion.jpg')}}" class="grab" draggable="true" onclick="click_lion()" ondragstart="grab_lion()" alt="Lion">
+            <label id="lion_label" class="label">Click/Drag the lion</label>
+            <img id="lion" src="{{url_for('static', filename='img/lion.jpg')}}" class="grab" draggable="true" onclick="click_lion()" ondragstart="grab_lion()" alt="Lion">
           </div>
         </div>
       </form>
